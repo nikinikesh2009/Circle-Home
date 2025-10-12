@@ -21,14 +21,14 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-20">
       <div className="max-w-6xl mx-auto text-center px-4">
-        <h2 className="text-3xl md:text-4xl font-bold font-headline mb-12 text-primary">
+        <h2 className="text-3xl md:text-4xl font-bold font-headline mb-12 text-foreground">
           Why Circle?
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((f, idx) => (
-            <Card key={idx} className="p-6 rounded-lg shadow-lg hover:shadow-xl transition text-center bg-card">
+            <Card key={idx} className="p-6 text-center bg-card border-0 shadow-none">
               <CardHeader className="flex justify-center items-center pb-4">
                 {f.icon}
               </CardHeader>
