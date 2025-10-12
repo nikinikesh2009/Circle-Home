@@ -1,12 +1,16 @@
 "use client";
 
+import { useRef } from 'react';
 import { Playfair_Display } from 'next/font/google';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
-import { BadgeCheck, CircleIcon, CheckCircle2 } from "lucide-react";
+import { BadgeCheck, CircleIcon, CheckCircle2, Download } from "lucide-react";
 import QRCode from "qrcode.react";
 import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -22,12 +26,39 @@ const riskData = [
 ];
 
 export default function CertificatePage() {
+    const certificateRef = useRef<HTMLDivElement>(null);
     const certificateId = "ACO-CRL-2025-001";
     const verificationUrl = typeof window !== "undefined" ? `${window.location.origin}/verify/${certificateId}`: '';
 
+    const handleDownload = async () => {
+        if (!certificateRef.current) return;
+
+        const canvas = await html2canvas(certificateRef.current, { 
+            scale: 2,
+            backgroundColor: null // Use transparent background to capture aurora
+        });
+        const imgData = canvas.toDataURL('image/png');
+        
+        // A4 dimensions in pixels at 96 dpi are roughly 794x1123, but we can use the canvas aspect ratio
+        const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'px',
+            format: [canvas.width, canvas.height]
+        });
+
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save("Circle-Certificate-of-Release.pdf");
+    };
+
     return (
         <div className={cn("w-full my-12 p-4 md:p-8", playfairDisplay.variable)}>
-             <Card className="relative overflow-hidden bg-white dark:bg-background/70 border-2 border-primary/20 shadow-2xl">
+            <div className="flex justify-end mb-4">
+                <Button onClick={handleDownload}>
+                    <Download className="mr-2" />
+                    Download Certificate
+                </Button>
+            </div>
+             <Card ref={certificateRef} className="relative overflow-hidden bg-white dark:bg-background/70 border-2 border-primary/20 shadow-2xl p-4">
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <CircleIcon className="text-primary/5 opacity-30 dark:opacity-10 h-[500px] w-[500px]" />
                 </div>
@@ -164,5 +195,3 @@ export default function CertificatePage() {
         </div>
     );
 }
-
-    
