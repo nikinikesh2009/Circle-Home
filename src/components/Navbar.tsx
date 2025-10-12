@@ -62,6 +62,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
+    { href: '/why-circle', label: 'Why Circle?' },
     { href: '/faq', label: 'FAQ' },
   ];
 
