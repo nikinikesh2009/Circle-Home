@@ -5,6 +5,8 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import AIChatBubble from '@/components/AIChatBubble';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export const metadata: Metadata = {
   title: 'Circle Website',
@@ -38,6 +40,8 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <AIChatBubble />
+          <LanguageSwitcher />
         </ThemeProvider>
       </body>
     </html>
