@@ -4,14 +4,49 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { useTheme } from 'next-themes';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const useActivePath = () => {
   const pathname = usePathname();
   return (path: string) => pathname === path;
 };
+
+function ThemeToggle() {
+  const { setTheme } = useTheme();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -70,13 +105,17 @@ export default function Navbar() {
                 </Link>
             </div>
 
-            <nav className="hidden md:flex gap-2">
+            <nav className="hidden md:flex gap-2 items-center">
             {navLinks.map(link => (
                 <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild key={link.href}>
                 <Link href={link.href}>{link.label}</Link>
                 </Button>
             ))}
+            <ThemeToggle />
             </nav>
+            <div className="md:hidden">
+              <ThemeToggle />
+            </div>
         </div>
       </div>
     </header>
