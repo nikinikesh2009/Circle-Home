@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -63,7 +63,6 @@ export default function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/why-circle', label: 'Why Circle?' },
-    { href: '/faq', label: 'FAQ' },
   ];
 
   const supportLinks = [
@@ -77,7 +76,7 @@ export default function Navbar() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="flex items-center gap-2">
             <CircleIcon className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold">ACO Network Circle</span>
+            <span className="text-lg font-bold">Circle - ACO Network</span>
           </Link>
         </div>
         <div className="flex items-center md:hidden">
@@ -93,7 +92,7 @@ export default function Navbar() {
                 <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
                  <Link href="/" className="flex items-center gap-2 mb-6" onClick={() => setIsMobileMenuOpen(false)}>
                     <CircleIcon className="h-6 w-6 text-primary" />
-                    <span className="text-lg font-bold">ACO Network Circle</span>
+                    <span className="text-lg font-bold">Circle - ACO Network</span>
                 </Link>
               <div className="flex flex-col gap-2">
                 {navLinks.map(link => (
@@ -105,6 +104,13 @@ export default function Navbar() {
                     </Button>
                   </SheetClose>
                 ))}
+                 <SheetClose asChild>
+                    <Button variant={isActive("/faq") ? "secondary" : "ghost"} asChild className="justify-start">
+                        <Link href="/faq">
+                          FAQ
+                        </Link>
+                    </Button>
+                  </SheetClose>
                  <div className="my-2 border-t border-border/40"></div>
                   {supportLinks.map(link => (
                       <SheetClose asChild key={link.href}>
@@ -133,7 +139,7 @@ export default function Navbar() {
             <div className="w-full flex-1 md:w-auto md:flex-none">
                 <Link href="/" className="flex items-center gap-2 md:hidden">
                     <CircleIcon className="h-6 w-6 text-primary" />
-                    <span className="text-lg font-bold">ACO Network Circle</span>
+                    <span className="text-lg font-bold">Circle - ACO Network</span>
                 </Link>
             </div>
 
@@ -145,7 +151,7 @@ export default function Navbar() {
             ))}
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant={isActive("/ai-support") || isActive("/human-support") ? "secondary" : "ghost"}>Support</Button>
+                  <Button variant={isActive("/ai-support") || isActive("/human-support") || isActive("/faq") ? "secondary" : "ghost"}>Support</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuContent align="end">
@@ -154,6 +160,9 @@ export default function Navbar() {
                         <Link href={link.href}>{link.icon} {link.label}</Link>
                       </DropdownMenuItem>
                     ))}
+                    <DropdownMenuItem asChild>
+                      <Link href="/faq"><HelpCircle className="mr-2"/>FAQ</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenuPortal>
               </DropdownMenu>
