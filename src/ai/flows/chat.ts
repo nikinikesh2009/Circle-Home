@@ -7,36 +7,35 @@
  * - ChatInput - The input type for the chat function.
  * - ChatOutput - The return type for the chat function.
  */
+
 import { z } from 'zod';
 
+// Define the schema for a single message in the history
+const MessageSchema = z.object({
+  role: z.enum(['user', 'bot']),
+  text: z.string(),
+  imageUrl: z.string().optional(),
+});
+
+// Define the schema for the chat input
 const ChatInputSchema = z.object({
-  history: z.array(
-    z.object({
-      role: z.enum(['user', 'bot']),
-      text: z.string(),
-      imageUrl: z.string().optional(),
-    })
-  ),
+  history: z.array(MessageSchema),
 });
 export type ChatInput = z.infer<typeof ChatInputSchema>;
 
+// Define the schema for the chat output
 const ChatOutputSchema = z.object({
   response: z.string(),
 });
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
-
-type DeepseekMessage = {
-  role: 'user' | 'assistant' | 'system';
-  content: string | ({ type: string; text: string } | { type: string; image_url: { url: string } })[];
-};
-
+// The main chat function that calls the Deepseek API
 export async function chat(input: ChatInput): Promise<ChatOutput> {
   const systemPrompt = `You are the official AI assistant for **Circle**, a next-generation social platform built to connect people who share the same passions, interests, and dreams. You are also an expert multilingual translator.
 
 ## Your Dual Role
 1.  **Circle Expert:** Provide knowledgeable, inspiring, and professional information about Circle.
-2.  **Translator:** If a user asks for a translation or speaks in a language other than English, you should seamlessly translate for them. You can translate between any languages you know.
+2.  **Translator:** If a user asks for a translation or speaks in a language other than English, you should seamlessly translate for them. You can translate between any languages you know, including Sinhala, Tamil, Chinese, Japanese, and Tagalog.
 
 ## 👑 Founding Details
 - Circle was created by **Nikil Nikesh**, also known as **SplashPro**, together with the **ACO Team**.
@@ -57,58 +56,52 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 - If users seem lost, help guide them to the right Circle or feature logically.
 - Never give false info. If unsure, say “I don’t have that detail yet.”`;
 
-  const messages: DeepseekMessage[] = [
-      { role: 'system', content: systemPrompt }
+  // Transform the history to the format expected by the Deepseek API
+  const messages = input.history.map(m => ({
+    role: m.role === 'bot' ? 'assistant' : 'user',
+    content: m.text,
+  }));
+
+  // Prepend the system prompt to the messages array
+  const apiMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages
   ];
-
-  input.history.forEach(m => {
-      // Skip the very first message from the bot if it's the welcome message
-      if (m.role === 'bot' && m.text.startsWith("Welcome to Circle AI support")) {
-          return;
-      }
-
-      const contentParts: ({ type: string; text: string } | { type: string; image_url: { url: string } })[] = [{ type: 'text', text: m.text }];
-      if (m.imageUrl) {
-          contentParts.push({ type: 'image_url', image_url: { url: m.imageUrl } });
-      }
-      messages.push({
-          role: m.role === 'bot' ? 'assistant' : 'user',
-          content: contentParts,
-      });
-  });
 
   try {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
-        messages: messages,
+        messages: apiMessages,
       }),
     });
 
     if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("Deepseek API Error:", response.status, errorBody);
-        throw new Error(`API request failed with status ${response.status}`);
+      const errorBody = await response.text();
+      console.error('Deepseek API Error:', errorBody);
+      throw new Error(`API request failed with status ${response.status}`);
     }
 
     const result = await response.json();
-    if (result.choices && result.choices.length > 0 && result.choices[0].message) {
+    
+    if (result.choices && result.choices.length > 0) {
       return {
         response: result.choices[0].message.content,
       };
     } else {
-      console.error("Deepseek API Error: Invalid response structure", result);
-      throw new Error("Invalid response structure from AI service.");
+      throw new Error('No response choices returned from API.');
     }
+
   } catch (error) {
-    console.error("Error calling Deepseek API:", error);
+    console.error('Error calling Deepseek AI:', error);
+    // Return a user-friendly error message
     return {
-        response: "Sorry, I'm having trouble connecting to the AI service. Please check the console for more details."
-    }
+      response: "Sorry, I'm having trouble connecting to the AI service. Please check the console for more details.",
+    };
   }
 }

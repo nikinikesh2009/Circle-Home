@@ -16,7 +16,7 @@ type Message = {
 
 export default function AiSupportChat() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", text: "Welcome to Circle AI support. How can I help you today? You can ask me questions about Circle or ask for translations." },
+    { role: "bot", text: "Welcome to Circle AI support. How can I help you today? You can ask me questions about Circle or request a translation." },
   ]);
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
