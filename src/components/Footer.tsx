@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { CircleIcon } from 'lucide-react';
 
@@ -18,7 +19,7 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-foreground">Product</h3>
             <div className="flex flex-col gap-2 text-sm">
-              <Link href="#" className="text-muted-foreground hover:text-primary">Download</Link>
+              <Link href="/download" className="text-muted-foreground hover:text-primary">Download</Link>
               <Link href="/faq" className="text-muted-foreground hover:text-primary">FAQ</Link>
               <Link href="/ai-support" className="text-muted-foreground hover:text-primary">AI Support</Link>
               <Link href="/human-support" className="text-muted-foreground hover:text-primary">Human Support</Link>
