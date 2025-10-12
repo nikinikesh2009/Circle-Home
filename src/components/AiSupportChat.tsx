@@ -96,7 +96,7 @@ export default function AiSupportChat() {
               <Image src={m.imageUrl} alt="User upload" width={200} height={200} className="rounded-md mb-2" />
             )}
             {m.text && (
-               <div className="prose prose-sm prose-invert max-w-none">
+               <div className="prose prose-sm dark:prose-invert max-w-none">
                 <ReactMarkdown>{m.text}</ReactMarkdown>
               </div>
             )}

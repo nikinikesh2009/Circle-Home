@@ -10,7 +10,7 @@ export default function SupportPage() {
   const [activeSupport, setActiveSupport] = useState<'ai' | 'human'>('ai');
 
   return (
-    <div className="h-[calc(100vh-10rem)] flex flex-col">
+    <div className="flex flex-col h-[calc(100vh-12rem)]">
       <header className="text-center mb-8">
         <h1 className="text-4xl font-bold font-headline text-primary animate-glow">Support</h1>
         <p className="text-lg text-muted-foreground mt-2">How can we help you today?</p>
@@ -34,8 +34,8 @@ export default function SupportPage() {
         </div>
       </header>
       
-      <div className="flex-1">
-        <div style={{ display: activeSupport === 'ai' ? 'block' : 'none' }}>
+      <div className="flex-1 min-h-0">
+        <div className="h-full" style={{ display: activeSupport === 'ai' ? 'block' : 'none' }}>
           <AiSupportChat />
         </div>
         <div style={{ display: activeSupport === 'human' ? 'block' : 'none' }}>
