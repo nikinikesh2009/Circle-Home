@@ -1,24 +1,24 @@
 "use client";
 
-import { Users, Bot, MessageCircle } from "lucide-react";
+import { Users, Bot, MessageCircle, Heart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 const features = [
   {
-    icon: <Users className="h-10 w-10 text-primary" />,
-    title: "Interest Circles",
-    desc: "Join circles based on your passions — from tech to fitness to anything you love."
+    icon: <Heart className="h-10 w-10 text-primary" />,
+    title: "Real Communities, Not Noise",
+    desc: "Join focused Circles that match your interests and passions, without the endless scrolling."
   },
   {
     icon: <Bot className="h-10 w-10 text-primary" />,
-    title: "AI Assistance",
-    desc: "Your personal AI guide helps you find circles, stay productive, and connect faster."
+    title: "AI That Gets You",
+    desc: "Let our smart AI guide you to the right people and conversations that truly matter to you."
   },
   {
-    icon: <MessageCircle className="h-10 w-10 text-primary" />,
-    title: "Smart Conversations",
-    desc: "Chat freely, create meaningful connections, and let AI moderate fairly."
+    icon: <Users className="h-10 w-10 text-primary" />,
+    title: "Find Your People Fast",
+    desc: "Connect instantly with a global community of creators, learners, and builders."
   }
 ];
 

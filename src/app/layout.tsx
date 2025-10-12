@@ -30,7 +30,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
+           <div className="aurora-background"></div>
+          <div className="flex flex-col min-h-screen relative z-10">
             <Navbar />
             <main className="flex-1 container mx-auto px-4 py-8">
               <AnimatedWrapper>{children}</AnimatedWrapper>
