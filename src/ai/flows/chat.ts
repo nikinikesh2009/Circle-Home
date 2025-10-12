@@ -39,7 +39,10 @@ const chatFlow = ai.defineFlow(
   },
   async (input) => {
     const history: MessageData[] = input.history.map(m => {
-      const content: ({text: string} | {media: {url: string}})[] = [{ text: m.text }];
+      const content: ({text: string} | {media: {url: string}})[] = [];
+      if (m.text) {
+        content.push({ text: m.text });
+      }
       if (m.imageUrl) {
         content.push({ media: { url: m.imageUrl } });
       }
