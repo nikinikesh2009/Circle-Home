@@ -1,6 +1,6 @@
 export default function MissionSection() {
   return (
-    <section className="bg-card border rounded-lg py-16 px-6">
+    <section className="bg-secondary/50 border border-border/50 rounded-lg py-16 px-6">
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
         <div className="text-center md:text-left">
           <h2 className="text-3xl font-bold mb-4 font-headline text-foreground">

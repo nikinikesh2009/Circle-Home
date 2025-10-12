@@ -1,7 +1,7 @@
 export default function TermsPage() {
   return (
-    <div className="max-w-4xl mx-auto prose prose-lg">
-      <h1 className="text-4xl font-bold font-headline text-primary">Terms of Service</h1>
+    <div className="max-w-4xl mx-auto prose prose-invert prose-lg prose-headings:text-primary prose-headings:font-headline prose-a:text-primary hover:prose-a:text-primary/80">
+      <h1 className="animate-glow">Terms of Service</h1>
       <p className="text-muted-foreground">Last updated: July 26, 2024</p>
       
       <h2>1. Introduction</h2>

@@ -17,12 +17,12 @@ export default function Timeline() {
   return (
     <section className="py-20 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold font-headline mb-12 text-primary">
+        <h2 className="text-4xl font-bold font-headline mb-12 text-primary animate-glow">
           Our Journey
         </h2>
         <div className="relative">
           {/* The vertical line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-3 bottom-3 w-0.5 bg-border -z-10"></div>
+          <div className="absolute left-1/2 -translate-x-1/2 top-3 bottom-3 w-0.5 bg-border/40 -z-10"></div>
           
           <div className="space-y-12">
             {milestones.map((m, idx) => (

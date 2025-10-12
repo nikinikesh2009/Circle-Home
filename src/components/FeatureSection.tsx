@@ -28,7 +28,7 @@ export default function FeatureSection() {
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((f, idx) => (
-            <Card key={idx} className="p-6 text-center bg-card border-0 shadow-none">
+            <Card key={idx} className="p-6 text-center bg-secondary border-border/50 hover:border-primary/50 transition-colors duration-300">
               <CardHeader className="flex justify-center items-center pb-4">
                 {f.icon}
               </CardHeader>

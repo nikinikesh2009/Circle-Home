@@ -28,13 +28,13 @@ export default function FAQPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold font-headline text-primary">Frequently Asked Questions</h1>
+        <h1 className="text-4xl font-bold font-headline text-primary animate-glow">Frequently Asked Questions</h1>
         <p className="text-lg text-muted-foreground mt-2">Find answers to common questions about Circle.</p>
       </header>
       
       <Accordion type="single" collapsible className="w-full space-y-4">
         {faqs.map((faq, index) => (
-          <AccordionItem value={`item-${index}`} key={index} className="border-b-0 rounded-lg shadow-sm bg-card">
+          <AccordionItem value={`item-${index}`} key={index} className="border-b-0 rounded-lg shadow-sm bg-secondary/50 border border-border/50">
             <AccordionTrigger className="p-6 text-lg font-semibold hover:no-underline">
               {faq.question}
             </AccordionTrigger>

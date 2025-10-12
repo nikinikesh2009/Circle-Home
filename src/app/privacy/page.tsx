@@ -1,7 +1,7 @@
 export default function PrivacyPage() {
   return (
-    <div className="max-w-4xl mx-auto prose prose-lg">
-      <h1 className="text-4xl font-bold font-headline text-primary">Privacy Policy</h1>
+    <div className="max-w-4xl mx-auto prose prose-invert prose-lg prose-headings:text-primary prose-headings:font-headline prose-a:text-primary hover:prose-a:text-primary/80">
+      <h1 className="animate-glow">Privacy Policy</h1>
       <p className="text-muted-foreground">Last updated: July 26, 2024</p>
       
       <h2>1. Information We Collect</h2>
