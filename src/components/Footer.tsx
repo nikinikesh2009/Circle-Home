@@ -30,7 +30,7 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-sm">
               <Link href="/about" className="text-muted-foreground hover:text-primary">About Us</Link>
               <Link href="/why-circle" className="text-muted-foreground hover:text-primary">Why Circle?</Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">Careers</Link>
+              <Link href="/careers" className="text-muted-foreground hover:text-primary">Careers</Link>
               <Link href="#" className="text-muted-foreground hover:text-primary">Contact</Link>
             </div>
           </div>
