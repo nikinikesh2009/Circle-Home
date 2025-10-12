@@ -77,7 +77,7 @@ export default function Navbar() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="flex items-center gap-2">
             <CircleIcon className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold">Circle</span>
+            <span className="text-lg font-bold">ACO Network Circle</span>
           </Link>
         </div>
         <div className="flex items-center md:hidden">
@@ -93,7 +93,7 @@ export default function Navbar() {
                 <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
                  <Link href="/" className="flex items-center gap-2 mb-6" onClick={() => setIsMobileMenuOpen(false)}>
                     <CircleIcon className="h-6 w-6 text-primary" />
-                    <span className="text-lg font-bold">Circle</span>
+                    <span className="text-lg font-bold">ACO Network Circle</span>
                 </Link>
               <div className="flex flex-col gap-2">
                 {navLinks.map(link => (
@@ -133,7 +133,7 @@ export default function Navbar() {
             <div className="w-full flex-1 md:w-auto md:flex-none">
                 <Link href="/" className="flex items-center gap-2 md:hidden">
                     <CircleIcon className="h-6 w-6 text-primary" />
-                    <span className="text-lg font-bold">Circle</span>
+                    <span className="text-lg font-bold">ACO Network Circle</span>
                 </Link>
             </div>
 
