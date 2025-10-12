@@ -14,6 +14,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="text-4xl md:text-6xl font-bold font-headline mb-6 text-foreground"
+          data-translate
         >
           Meet People Who Share Your Passion
         </motion.h1>
@@ -22,6 +23,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2 }}
           className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
+           data-translate
         >
           Circle connects dreamers, creators, and builders through powerful AI and meaningful communities.
         </motion.p>
@@ -32,10 +34,10 @@ export default function Hero() {
           className="flex flex-col sm:flex-row justify-center gap-4"
         >
           <Button asChild size="lg">
-            <Link href="/download">Download App</Link>
+            <Link href="/download" data-translate>Download App</Link>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <Link href="/about">Learn More</Link>
+            <Link href="/about" data-translate>Learn More</Link>
           </Button>
         </motion.div>
       </div>

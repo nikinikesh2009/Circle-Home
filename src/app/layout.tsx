@@ -7,6 +7,7 @@ import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Inter, Space_Grotesk, Playfair_Display } from 'next/font/google';
 import { cn } from '@/lib/utils';
+import { TranslationProvider } from '@/context/TranslationContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,22 +38,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.variable, spaceGrotesk.variable, playfairDisplay.variable, "font-body antialiased bg-background")}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-           <div className="aurora-background"></div>
-          <div className="flex flex-col min-h-screen relative z-10">
-            <Navbar />
-            <main className="flex-1 container mx-auto px-4 py-8">
-              <AnimatedWrapper>{children}</AnimatedWrapper>
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <TranslationProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="aurora-background"></div>
+            <div className="flex flex-col min-h-screen relative z-10">
+              <Navbar />
+              <main className="flex-1 container mx-auto px-4 py-8">
+                <AnimatedWrapper>{children}</AnimatedWrapper>
+              </main>
+              <Footer />
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </TranslationProvider>
       </body>
     </html>
   );

@@ -32,6 +32,7 @@ export default function FeatureSection() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold font-headline mb-12 text-foreground"
+          data-translate
         >
           Why Circle?
         </motion.h2>
@@ -48,9 +49,9 @@ export default function FeatureSection() {
                 <CardHeader className="flex justify-center items-center pb-4">
                   {f.icon}
                 </CardHeader>
-                <CardTitle className="text-xl font-semibold mb-2">{f.title}</CardTitle>
+                <CardTitle className="text-xl font-semibold mb-2" data-translate>{f.title}</CardTitle>
                 <CardContent>
-                  <p className="text-muted-foreground">{f.desc}</p>
+                  <p className="text-muted-foreground" data-translate>{f.desc}</p>
                 </CardContent>
               </Card>
             </motion.div>

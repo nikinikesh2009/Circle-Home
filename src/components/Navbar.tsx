@@ -1,13 +1,12 @@
-
 "use client";
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle, BadgeCheck, Languages } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle, BadgeCheck, Languages, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useTheme } from 'next-themes';
 import {
   DropdownMenu,
@@ -20,7 +19,11 @@ import {
   DropdownMenuPortal,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { TranslationContext } from '@/context/TranslationContext';
+
 
 const useActivePath = () => {
   const pathname = usePathname();
@@ -58,33 +61,45 @@ function ThemeToggle() {
 }
 
 function LanguageSwitcher() {
+  const { language, setLanguage, translatePage, isTranslating } = useContext(TranslationContext);
+
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'es', name: 'Spanish' },
+    { code: 'fr', name: 'French' },
+    { code: 'de', name: 'German' },
+    { code: 'ja', name: 'Japanese' },
+    { code: 'ko', name: 'Korean' },
+    { code: 'zh', name: 'Chinese' },
+    { code: 'si', name: 'Sinhala' },
+    { code: 'ta', name: 'Tamil' },
+  ];
+
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang);
+    if (lang !== 'en') {
+      translatePage(lang);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Languages className="h-[1.2rem] w-[1.2rem]" />
+          {isTranslating ? <Loader2 className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Languages className="h-[1.2rem] w-[1.2rem]" />}
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel className="font-bold">Translate Page</DropdownMenuLabel>
+        <DropdownMenuLabel>Translate Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
-         <div className="p-2 text-sm text-muted-foreground max-w-xs">
-          <p className="font-semibold text-foreground mb-2">This site can be translated into many languages using your browser:</p>
-          <ul className="list-disc list-inside text-xs">
-            <li>Sinhala (සිංහල)</li>
-            <li>Tamil (தமிழ்)</li>
-            <li>Chinese (中文)</li>
-            <li>Japanese (日本語)</li>
-            <li>Tagalog</li>
-            <li>Spanish (Español)</li>
-            <li>And many more...</li>
-          </ul>
-          <br />
-          <p>
-            To translate, <strong className="text-foreground">right-click</strong> anywhere on the page and select your browser's <strong className="text-foreground">"Translate"</strong> option.
-          </p>
-        </div>
+        <DropdownMenuRadioGroup value={language} onValueChange={handleLanguageChange}>
+          {languages.map((lang) => (
+            <DropdownMenuRadioItem key={lang.code} value={lang.code}>
+              {lang.name}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -138,7 +153,7 @@ export default function Navbar() {
                 {navLinks.map(link => (
                   <SheetClose asChild key={link.href}>
                     <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild className="justify-start">
-                        <Link href={link.href}>
+                        <Link href={link.href} data-translate>
                         {link.label}
                         </Link>
                     </Button>
@@ -146,7 +161,7 @@ export default function Navbar() {
                 ))}
                  <SheetClose asChild>
                     <Button variant={isActive("/faq") ? "secondary" : "ghost"} asChild className="justify-start">
-                        <Link href="/faq">
+                        <Link href="/faq" data-translate>
                           FAQ
                         </Link>
                     </Button>
@@ -157,7 +172,7 @@ export default function Navbar() {
                         <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild className="justify-start w-full">
                             <Link href={link.href}>
                             {link.icon}
-                            {link.label}
+                            <span data-translate>{link.label}</span>
                             </Link>
                         </Button>
                       </SheetClose>
@@ -167,7 +182,7 @@ export default function Navbar() {
                       <Button asChild className="justify-center w-full">
                           <Link href="/download">
                           <Download className="mr-2" />
-                          Download App
+                          <span data-translate>Download App</span>
                           </Link>
                       </Button>
                     </SheetClose>
@@ -187,22 +202,22 @@ export default function Navbar() {
             <nav className="hidden md:flex gap-2 items-center">
             {navLinks.map(link => (
                 <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
+                <Link href={link.href} data-translate>{link.label}</Link>
                 </Button>
             ))}
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant={isActive("/ai-support") || isActive("/human-support") || isActive("/faq") ? "secondary" : "ghost"}>Support</Button>
+                  <Button variant={isActive("/ai-support") || isActive("/human-support") || isActive("/faq") ? "secondary" : "ghost"} data-translate>Support</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuContent align="end">
                     {supportLinks.map(link => (
                       <DropdownMenuItem asChild key={link.href}>
-                        <Link href={link.href}>{link.icon} {link.label}</Link>
+                        <Link href={link.href}>{link.icon} <span data-translate>{link.label}</span></Link>
                       </DropdownMenuItem>
                     ))}
                     <DropdownMenuItem asChild>
-                      <Link href="/faq"><HelpCircle className="mr-2"/>FAQ</Link>
+                      <Link href="/faq"><HelpCircle className="mr-2"/><span data-translate>FAQ</span></Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenuPortal>
@@ -211,7 +226,7 @@ export default function Navbar() {
             <Button asChild size="sm" className="ml-4">
                 <Link href="/download">
                     <Download className="mr-2"/>
-                    Download
+                    <span data-translate>Download</span>
                 </Link>
             </Button>
             <LanguageSwitcher />
