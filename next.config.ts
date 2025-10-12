@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['bcrypt'],
   },
+  webpack: (config, { isServer }) => {
+    // This is to fix a build error with bcrypt
+    config.externals.push('bcrypt');
+    return config;
+  }
 };
 
 export default nextConfig;
