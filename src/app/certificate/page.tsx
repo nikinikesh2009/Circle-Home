@@ -26,7 +26,7 @@ export default function CertificatePage() {
     const verificationUrl = typeof window !== "undefined" ? `${window.location.origin}/verify/${certificateId}`: '';
 
     return (
-        <div className={cn("max-w-5xl mx-auto my-12 p-4 md:p-8", playfairDisplay.variable)}>
+        <div className={cn("w-full my-12 p-4 md:p-8", playfairDisplay.variable)}>
              <Card className="relative overflow-hidden bg-white dark:bg-background/70 border-2 border-primary/20 shadow-2xl">
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <CircleIcon className="text-primary/5 opacity-30 dark:opacity-10 h-[500px] w-[500px]" />
@@ -164,3 +164,5 @@ export default function CertificatePage() {
         </div>
     );
 }
+
+    

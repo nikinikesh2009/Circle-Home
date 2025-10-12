@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle, BadgeCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -63,6 +63,8 @@ export default function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/why-circle', label: 'Why Circle?' },
+    { href: '/careers', label: 'Careers' },
+    { href: '/certificate', label: 'Certificate' },
   ];
 
   const supportLinks = [
@@ -77,6 +79,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2">
             <CircleIcon className="h-6 w-6 text-primary" />
             <span className="text-lg font-bold">Circle - ACO Network</span>
+            <BadgeCheck className="h-5 w-5 text-blue-500" />
           </Link>
         </div>
         <div className="flex items-center md:hidden">
@@ -93,6 +96,7 @@ export default function Navbar() {
                  <Link href="/" className="flex items-center gap-2 mb-6" onClick={() => setIsMobileMenuOpen(false)}>
                     <CircleIcon className="h-6 w-6 text-primary" />
                     <span className="text-lg font-bold">Circle - ACO Network</span>
+                    <BadgeCheck className="h-5 w-5 text-blue-500" />
                 </Link>
               <div className="flex flex-col gap-2">
                 {navLinks.map(link => (
@@ -140,6 +144,7 @@ export default function Navbar() {
                 <Link href="/" className="flex items-center gap-2 md:hidden">
                     <CircleIcon className="h-6 w-6 text-primary" />
                     <span className="text-lg font-bold">Circle - ACO Network</span>
+                    <BadgeCheck className="h-5 w-5 text-blue-500" />
                 </Link>
             </div>
 
@@ -183,3 +188,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+    
