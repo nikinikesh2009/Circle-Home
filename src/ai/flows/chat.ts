@@ -27,7 +27,7 @@ export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
 
 type DeepseekMessage = {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string | ({ type: string; text: string } | { type: string; image_url: { url: string } })[];
 };
 
@@ -58,7 +58,7 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 - Never give false info. If unsure, say “I don’t have that detail yet.”`;
 
   const messages: DeepseekMessage[] = [
-      { role: 'assistant', content: systemPrompt }
+      { role: 'system', content: systemPrompt }
   ];
 
   input.history.forEach(m => {
@@ -92,9 +92,14 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
     }
 
     const result = await response.json();
-    return {
-      response: result.choices[0].message.content,
-    };
+    if (result.choices && result.choices.length > 0 && result.choices[0].message) {
+      return {
+        response: result.choices[0].message.content,
+      };
+    } else {
+      console.error("Deepseek API Error: Invalid response structure", result);
+      throw new Error("Invalid response structure from AI service.");
+    }
   } catch (error) {
     console.error("Error calling Deepseek API:", error);
     return {
