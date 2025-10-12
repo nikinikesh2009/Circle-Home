@@ -5,7 +5,6 @@ import AiSupportChat from "@/components/AiSupportChat";
 import HumanSupportForm from "@/components/HumanSupportForm";
 import { Button } from '@/components/ui/button';
 import { Bot, User } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export default function SupportPage() {
   const [activeSupport, setActiveSupport] = useState<'ai' | 'human'>('ai');
@@ -36,11 +35,12 @@ export default function SupportPage() {
       </header>
       
       <div className="flex-1">
-        {activeSupport === 'ai' ? (
+        <div style={{ display: activeSupport === 'ai' ? 'block' : 'none' }}>
           <AiSupportChat />
-        ) : (
+        </div>
+        <div style={{ display: activeSupport === 'human' ? 'block' : 'none' }}>
           <HumanSupportForm />
-        )}
+        </div>
       </div>
     </div>
   );
