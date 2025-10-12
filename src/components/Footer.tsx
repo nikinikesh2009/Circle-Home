@@ -20,7 +20,8 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-sm">
               <Link href="#" className="text-muted-foreground hover:text-primary">Download</Link>
               <Link href="/faq" className="text-muted-foreground hover:text-primary">FAQ</Link>
-              <Link href="/support" className="text-muted-foreground hover:text-primary">Support</Link>
+              <Link href="/ai-support" className="text-muted-foreground hover:text-primary">AI Support</Link>
+              <Link href="/human-support" className="text-muted-foreground hover:text-primary">Human Support</Link>
             </div>
           </div>
            <div>

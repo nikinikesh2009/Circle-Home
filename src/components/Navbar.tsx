@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -13,11 +13,18 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
 
 const useActivePath = () => {
   const pathname = usePathname();
-  return (path: string) => pathname === path;
+  return (path: string, partial?: boolean) => {
+    if (partial) return pathname.startsWith(path);
+    return pathname === path;
+  }
 };
 
 function ThemeToggle() {
@@ -56,8 +63,12 @@ export default function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/faq', label: 'FAQ' },
-    { href: '/support', label: 'Support' },
   ];
+
+  const supportLinks = [
+    { href: '/ai-support', label: 'AI Support', icon: <Bot /> },
+    { href: '/human-support', label: 'Human Support', icon: <User /> },
+  ]
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -93,6 +104,18 @@ export default function Navbar() {
                     </Button>
                   </SheetClose>
                 ))}
+                 <div className="pl-4">
+                  {supportLinks.map(link => (
+                      <SheetClose asChild key={link.href}>
+                        <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild className="justify-start w-full mt-1">
+                            <Link href={link.href}>
+                            {link.icon}
+                            {link.label}
+                            </Link>
+                        </Button>
+                      </SheetClose>
+                  ))}
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -111,6 +134,21 @@ export default function Navbar() {
                 <Link href={link.href}>{link.label}</Link>
                 </Button>
             ))}
+             <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant={isActive("/ai-support") || isActive("/human-support") ? "secondary" : "ghost"}>Support</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuContent align="end">
+                    {supportLinks.map(link => (
+                      <DropdownMenuItem asChild key={link.href}>
+                        <Link href={link.href}>{link.icon} {link.label}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenuPortal>
+              </DropdownMenu>
+
             <ThemeToggle />
             </nav>
             <div className="md:hidden">
