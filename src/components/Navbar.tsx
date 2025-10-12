@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -62,12 +62,13 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
+    { href: '/download', label: 'Download'},
     { href: '/faq', label: 'FAQ' },
   ];
 
   const supportLinks = [
-    { href: '/ai-support', label: 'AI Support', icon: <Bot /> },
-    { href: '/human-support', label: 'Human Support', icon: <User /> },
+    { href: '/ai-support', label: 'AI Support', icon: <Bot className="mr-2" /> },
+    { href: '/human-support', label: 'Human Support', icon: <User className="mr-2" /> },
   ]
 
   return (
@@ -90,7 +91,7 @@ export default function Navbar() {
             <SheetContent side="left">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
-                 <Link href="/" className="flex items-center gap-2 mb-6">
+                 <Link href="/" className="flex items-center gap-2 mb-6" onClick={() => setIsMobileMenuOpen(false)}>
                     <CircleIcon className="h-6 w-6 text-primary" />
                     <span className="text-lg font-bold">Circle</span>
                 </Link>
@@ -104,10 +105,10 @@ export default function Navbar() {
                     </Button>
                   </SheetClose>
                 ))}
-                 <div className="pl-4">
+                 <div className="my-2 border-t border-border/40"></div>
                   {supportLinks.map(link => (
                       <SheetClose asChild key={link.href}>
-                        <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild className="justify-start w-full mt-1">
+                        <Button variant={isActive(link.href) ? "secondary" : "ghost"} asChild className="justify-start w-full">
                             <Link href={link.href}>
                             {link.icon}
                             {link.label}
@@ -115,7 +116,6 @@ export default function Navbar() {
                         </Button>
                       </SheetClose>
                   ))}
-                </div>
               </div>
             </SheetContent>
           </Sheet>
