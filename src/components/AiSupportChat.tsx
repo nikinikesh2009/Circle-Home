@@ -47,13 +47,21 @@ export default function AiSupportChat() {
 
     const userMessage: Message = { role: "user", text: input, imageUrl: imageUrl ?? undefined };
     setMessages((prev) => [...prev, userMessage]);
+    
+    const currentInput = input;
+    const currentImageUrl = imageUrl;
+    
     setInput("");
     setImageUrl(null);
     setIsLoading(true);
 
     try {
       const chatInput: ChatInput = {
-        history: [...messages, userMessage],
+        history: [...messages, userMessage].map(m => ({
+          role: m.role,
+          text: m.text,
+          imageUrl: m.imageUrl,
+        })),
       };
       const result = await chat(chatInput);
       setMessages((prev) => [...prev, { role: "bot", text: result.response }]);
