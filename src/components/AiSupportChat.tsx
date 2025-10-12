@@ -16,7 +16,7 @@ type Message = {
 
 export default function AiSupportChat() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", text: "Welcome to Circle AI support. How can I help you today?" },
+    { role: "bot", text: "Welcome to Circle AI support. How can I help you today? You can ask me questions about Circle or ask for translations." },
   ]);
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -47,7 +47,8 @@ export default function AiSupportChat() {
     if (!input.trim() && !imageUrl) return;
 
     const userMessage: Message = { role: "user", text: input, imageUrl: imageUrl ?? undefined };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     
     setInput("");
     setImageUrl(null);
@@ -55,7 +56,7 @@ export default function AiSupportChat() {
 
     try {
       const chatInput: ChatInput = {
-        history: [...messages, userMessage].map(m => ({
+        history: newMessages.map(m => ({
           role: m.role,
           text: m.text,
           imageUrl: m.imageUrl,
@@ -63,11 +64,11 @@ export default function AiSupportChat() {
       };
       const result = await chat(chatInput);
       setMessages((prev) => [...prev, { role: "bot", text: result.response }]);
-    } catch (error) {
+    } catch (error) => {
       console.error("Error calling AI:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "Sorry, I'm having trouble connecting. Please try again later." },
+        { role: "bot", text: "Sorry, I'm having trouble connecting. Please check your API key and try again later." },
       ]);
     } finally {
       setIsLoading(false);
@@ -75,7 +76,7 @@ export default function AiSupportChat() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !isLoading) {
       handleSend();
     }
   };
@@ -139,7 +140,7 @@ export default function AiSupportChat() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1"
-            placeholder="Describe your issue or ask a question..."
+            placeholder="Ask about Circle or request a translation..."
             disabled={isLoading}
           />
           <Button size="icon" onClick={handleSend} disabled={(!input.trim() && !imageUrl) || isLoading}>

@@ -1,20 +1,26 @@
 'use server';
 /**
- * @fileOverview A simple chat flow that uses Deepseek to generate a response.
+ * @fileOverview A simple chat flow that uses Google's Gemini model via Genkit.
+ * It is designed to act as an expert on the "Circle" platform and also function as a multilingual translator.
  *
  * - chat - A function that handles the chat interaction.
  * - ChatInput - The input type for the chat function.
  * - ChatOutput - The return type for the chat function.
  */
 
-import { z } from 'zod';
+import {ai} from '@/ai/genkit';
+import {z} from 'genkit';
+import {generate} from 'genkit/ai';
+import {MessageData, Part} from 'genkit/ai/message';
 
 const ChatInputSchema = z.object({
-  history: z.array(z.object({
-    role: z.enum(['user', 'bot']),
-    text: z.string(),
-    imageUrl: z.string().optional(),
-  })),
+  history: z.array(
+    z.object({
+      role: z.enum(['user', 'bot']),
+      text: z.string(),
+      imageUrl: z.string().optional(),
+    })
+  ),
 });
 export type ChatInput = z.infer<typeof ChatInputSchema>;
 
@@ -24,10 +30,11 @@ const ChatOutputSchema = z.object({
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
 export async function chat(input: ChatInput): Promise<ChatOutput> {
-  const messages = [
-    {
-      role: 'system',
-      content: `You are the official AI assistant for **Circle**, a next-generation social platform built to connect people who share the same passions, interests, and dreams.
+  const systemPrompt = `You are the official AI assistant for **Circle**, a next-generation social platform built to connect people who share the same passions, interests, and dreams. You are also an expert multilingual translator.
+
+## Your Dual Role
+1.  **Circle Expert:** Provide knowledgeable, inspiring, and professional information about Circle.
+2.  **Translator:** If a user asks for a translation or speaks in a language other than English, you should seamlessly translate for them. You can translate between any languages you know.
 
 ## 👑 Founding Details
 - Circle was created by **Nikil Nikesh**, also known as **SplashPro**, together with the **ACO Team**.
@@ -40,76 +47,39 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 - The mission of Circle is:
   > “Bring the right people together — and let real connections build everything else.”
 
-## 🧭 How Circles Work
-- Users join **pre-created Circles** (e.g., Fitness, Python Programming, Gaming, Startups, Relationships, Learning).
-- Each Circle is a **space for meaningful communication** — no random noise.
-- Users can chat, collaborate, and grow together.
-- AI moderation keeps the space safe, focused, and positive.
-- Verified organizations or special users can create private Circles with admin controls.
-- There’s also a **direct messaging system** to build 1-on-1 connections.
-
-## ⚡ Why Circle Is Different
-- 🌐 Matches people based on **interests and goals**, not popularity.
-- 🧠 AI guides users, moderates discussions, and helps them find the right people or Circles.
-- 🧭 Focus on **quality interaction**, not infinite scrolling.
-- 🔥 Built to help real human connection and teamwork grow globally.
-
-## 🧠 Example Scenarios
-- A **Python developer** joins a coding Circle to meet others and collaborate on a project.
-- A **fitness lover** finds a gym buddy in the Fitness Circle.
-- A **student** joins a study Circle to find partners who share the same academic goals.
-- An **organization** creates a private Circle for its community.
-
-## ✨ Future Vision
-- Circles will be universal — covering every passion and profession.
-- AI will help people instantly match with the most compatible Circles or individuals.
-- Circle will become a global movement for **real connection**, not fake engagement.
-
 ## 🧠 How You Should Respond (AI Behavior)
-- Always speak **clearly**, **professionally**, and **in an inspiring tone**.
+- **Be a Translator:** If a prompt is a translation request (e.g., "translate 'hello' to Sinhala") or is in another language, fulfill the translation or respond fluently in that language.
+- **Be a Circle Expert:** When asked about Circle, speak **clearly**, **professionally**, and **in an inspiring tone**.
 - If users ask “What is Circle?”, give a simple, confident explanation.
 - If users ask “Who created Circle?”, reply: “Circle was created by Nikil Nikesh (SplashPro) and ACO Team.”
-- If users ask about Circles, explain their function and give relevant examples.
-- If users ask about the vision or purpose, use motivational language.
 - If users seem lost, help guide them to the right Circle or feature logically.
-- Never give false info. If unsure, say “I don’t have that detail yet.”`
-    },
-    ...input.history.map(m => ({
-      role: m.role === 'bot' ? 'assistant' : 'user',
-      content: m.text,
-    }))
-  ];
+- Never give false info. If unsure, say “I don’t have that detail yet.”`;
 
-  try {
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: messages,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error('DeepSeek API Error:', errorBody);
-      throw new Error(`DeepSeek API request failed with status ${response.status}`);
+  const history: MessageData[] = input.history.map(m => {
+    const parts: Part[] = [{text: m.text}];
+    if (m.imageUrl) {
+      parts.push({
+        media: {
+          url: m.imageUrl,
+        },
+      });
     }
-
-    const result = await response.json();
-    const botResponse = result.choices[0]?.message?.content || "Sorry, I couldn't get a response.";
-    
     return {
-      response: botResponse,
+      role: m.role === 'bot' ? 'model' : 'user',
+      content: parts,
     };
+  });
 
-  } catch (error) {
-    console.error('Error calling DeepSeek API:', error);
-    return {
-      response: "Sorry, I'm having trouble connecting to the AI. Please try again later.",
-    };
-  }
+  const response = await generate({
+    model: 'gemini-1.5-flash-latest',
+    prompt: {
+      system: systemPrompt,
+      history: history.slice(0, -1),
+      messages: [history[history.length - 1]],
+    },
+  });
+
+  return {
+    response: response.text,
+  };
 }
