@@ -39,7 +39,7 @@ const chatFlow = ai.defineFlow(
   },
   async (input) => {
     const history: MessageData[] = input.history.map(m => {
-      const content = [{ text: m.text }];
+      const content: ({text: string} | {media: {url: string}})[] = [{ text: m.text }];
       if (m.imageUrl) {
         content.push({ media: { url: m.imageUrl } });
       }
@@ -50,7 +50,7 @@ const chatFlow = ai.defineFlow(
     });
 
     const response = await ai.generate({
-      prompt: "You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.",
+      system: "You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.",
       history,
     });
 
