@@ -27,7 +27,7 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
   const messages = [
     {
       role: 'system',
-      content: 'You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.'
+      content: 'You are Circle AI, a helpful, professional assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise, friendly, and well-structured. Use formatting like lists or bold text to make information clear and easy to understand.'
     },
     ...input.history.map(m => ({
       role: m.role === 'bot' ? 'assistant' : 'user',
