@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, X, Send } from "lucide-react";
+import { MessageSquare, X, Send, Loader } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { chat, type ChatInput } from "@/ai/flows/chat";
 
 type Message = {
   role: "bot" | "user";
@@ -17,20 +18,41 @@ export default function AIChatBubble() {
     { role: "bot", text: "Hi 👋 I'm Circle AI. How can I help you?" },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isOpen]);
+
+  const handleSend = async () => {
     if (!input.trim()) return;
-    const newMessages: Message[] = [...messages, { role: "user", text: input }];
-    setMessages(newMessages);
+    const userMessage: Message = { role: "user", text: input };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsLoading(true);
 
-    // Dummy AI response
-    setTimeout(() => {
-      setMessages((msgs) => [
-        ...msgs,
-        { role: "bot", text: "I'm here to help! (Real AI coming soon 🤖)" },
+    try {
+      const chatInput: ChatInput = {
+        history: [...messages, userMessage],
+      };
+      const result = await chat(chatInput);
+      setMessages((prev) => [...prev, { role: "bot", text: result.response }]);
+    } catch (error) {
+      console.error("Error calling AI:", error);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "Sorry, I'm having trouble connecting. Please try again later." },
       ]);
-    }, 600);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -61,7 +83,7 @@ export default function AIChatBubble() {
                 {messages.map((m, idx) => (
                   <div
                     key={idx}
-                    className={`p-2.5 rounded-lg text-sm max-w-[85%] ${
+                    className={`p-2.5 rounded-lg text-sm max-w-[85%] flex-shrink-0 ${
                       m.role === "bot"
                         ? "bg-background/70 text-foreground self-start"
                         : "bg-primary text-primary-foreground self-end ml-auto"
@@ -70,6 +92,12 @@ export default function AIChatBubble() {
                     {m.text}
                   </div>
                 ))}
+                {isLoading && (
+                  <div className="p-2.5 rounded-lg text-sm max-w-[85%] bg-background/70 text-foreground self-start">
+                    <Loader className="h-5 w-5 animate-spin"/>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
               </CardContent>
               <CardFooter className="p-2 border-t border-border/50">
                 <div className="flex w-full items-center gap-2">
@@ -79,8 +107,9 @@ export default function AIChatBubble() {
                     onKeyDown={handleKeyDown}
                     className="flex-1"
                     placeholder="Ask me anything..."
+                    disabled={isLoading}
                   />
-                  <Button size="icon" onClick={handleSend} disabled={!input.trim()}>
+                  <Button size="icon" onClick={handleSend} disabled={!input.trim() || isLoading}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
