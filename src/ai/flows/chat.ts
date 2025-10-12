@@ -12,7 +12,7 @@ import { z } from 'genkit';
 import {
   generate as genkitGenerate,
   MessageData,
-} from 'genkit/generate';
+} from 'genkit';
 
 const ChatInputSchema = z.object({
   history: z.array(z.object({
