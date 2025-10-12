@@ -17,6 +17,7 @@ const ChatInputSchema = z.object({
   history: z.array(z.object({
     role: z.enum(['user', 'bot']),
     text: z.string(),
+    imageUrl: z.string().optional(),
   })),
 });
 export type ChatInput = z.infer<typeof ChatInputSchema>;
@@ -37,10 +38,16 @@ const chatFlow = ai.defineFlow(
     outputSchema: ChatOutputSchema,
   },
   async (input) => {
-    const history: MessageData[] = input.history.map(m => ({
-      role: m.role === 'bot' ? 'model' : 'user',
-      content: [{ text: m.text }],
-    }));
+    const history: MessageData[] = input.history.map(m => {
+      const content = [{ text: m.text }];
+      if (m.imageUrl) {
+        content.push({ media: { url: m.imageUrl } });
+      }
+      return {
+        role: m.role === 'bot' ? 'model' : 'user',
+        content,
+      };
+    });
 
     const response = await ai.generate({
       prompt: "You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.",
