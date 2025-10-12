@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ImagePlus, Loader, Send, X } from "lucide-react";
 import Image from "next/image";
 import { chat, type ChatInput } from "@/ai/flows/chat";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   role: "bot" | "user";
@@ -47,9 +48,6 @@ export default function AiSupportChat() {
 
     const userMessage: Message = { role: "user", text: input, imageUrl: imageUrl ?? undefined };
     setMessages((prev) => [...prev, userMessage]);
-    
-    const currentInput = input;
-    const currentImageUrl = imageUrl;
     
     setInput("");
     setImageUrl(null);
@@ -97,7 +95,11 @@ export default function AiSupportChat() {
             {m.imageUrl && (
               <Image src={m.imageUrl} alt="User upload" width={200} height={200} className="rounded-md mb-2" />
             )}
-            {m.text && <p className="whitespace-pre-wrap">{m.text}</p>}
+            {m.text && (
+               <div className="prose prose-sm prose-invert max-w-none">
+                <ReactMarkdown>{m.text}</ReactMarkdown>
+              </div>
+            )}
           </div>
         ))}
         {isLoading && (
