@@ -31,7 +31,7 @@ export default function Footer() {
               <Link href="/about" className="text-muted-foreground hover:text-primary">About Us</Link>
               <Link href="/why-circle" className="text-muted-foreground hover:text-primary">Why Circle?</Link>
               <Link href="/careers" className="text-muted-foreground hover:text-primary">Careers</Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">Contact</Link>
+              <Link href="/certificate" className="text-muted-foreground hover:text-primary">Certificate</Link>
             </div>
           </div>
            <div>

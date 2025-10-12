@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Inter, Space_Grotesk, Playfair_Display } from 'next/font/google';
 import { cn } from '@/lib/utils';
 
 const inter = Inter({
@@ -17,6 +17,12 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
 });
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair-display',
+});
+
 
 export const metadata: Metadata = {
   title: 'Circle Website',
@@ -30,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.variable, spaceGrotesk.variable, "font-body antialiased bg-background")}>
+      <body className={cn(inter.variable, spaceGrotesk.variable, playfairDisplay.variable, "font-body antialiased bg-background")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
