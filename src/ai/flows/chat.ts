@@ -1,17 +1,13 @@
 'use server';
 /**
- * @fileOverview A simple chat flow that uses Gemini to generate a response.
+ * @fileOverview A simple chat flow that uses Deepseek to generate a response.
  *
  * - chat - A function that handles the chat interaction.
  * - ChatInput - The input type for the chat function.
  * - ChatOutput - The return type for the chat function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
-import {
-  MessageData,
-} from 'genkit/model';
+import { z } from 'zod';
 
 const ChatInputSchema = z.object({
   history: z.array(z.object({
@@ -28,37 +24,47 @@ const ChatOutputSchema = z.object({
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
 export async function chat(input: ChatInput): Promise<ChatOutput> {
-  return chatFlow(input);
-}
+  const messages = [
+    {
+      role: 'system',
+      content: 'You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.'
+    },
+    ...input.history.map(m => ({
+      role: m.role === 'bot' ? 'assistant' : 'user',
+      content: m.text,
+    }))
+  ];
 
-const chatFlow = ai.defineFlow(
-  {
-    name: 'chatFlow',
-    inputSchema: ChatInputSchema,
-    outputSchema: ChatOutputSchema,
-  },
-  async (input) => {
-    const history: MessageData[] = input.history.map(m => {
-      const content: ({text: string} | {media: {url: string}})[] = [];
-      if (m.text) {
-        content.push({ text: m.text });
-      }
-      if (m.imageUrl) {
-        content.push({ media: { url: m.imageUrl } });
-      }
-      return {
-        role: m.role === 'bot' ? 'model' : 'user',
-        content,
-      };
+  try {
+    const response = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: messages,
+      }),
     });
 
-    const response = await ai.generate({
-      system: "You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.",
-      history,
-    });
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error('DeepSeek API Error:', errorBody);
+      throw new Error(`DeepSeek API request failed with status ${response.status}`);
+    }
 
+    const result = await response.json();
+    const botResponse = result.choices[0]?.message?.content || "Sorry, I couldn't get a response.";
+    
     return {
-      response: response.text,
+      response: botResponse,
+    };
+
+  } catch (error) {
+    console.error('Error calling DeepSeek API:', error);
+    return {
+      response: "Sorry, I'm having trouble connecting to the AI. Please try again later.",
     };
   }
-);
+}
