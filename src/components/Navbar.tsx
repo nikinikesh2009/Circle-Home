@@ -1,9 +1,22 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+
+const useActivePath = () => {
+  const pathname = usePathname();
+  return (path: string) => pathname === path;
+};
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isActive = useActivePath();
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
@@ -29,13 +42,13 @@ export default function Navbar() {
         </div>
         <nav className="hidden md:flex items-center gap-2 flex-1">
           {navLinks.map(link => (
-            <Button variant="ghost" asChild key={link.href}>
+            <Button variant="ghost" asChild key={link.href} className={cn(isActive(link.href) && 'font-bold bg-accent')}>
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end md:hidden">
-          <Sheet>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
@@ -43,13 +56,16 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
               <div className="flex flex-col gap-4 py-6">
+                 <Link href="/" className="mb-4">
+                    <span className="text-2xl font-bold font-headline text-primary">Circle</span>
+                </Link>
                 {navLinks.map(link => (
-                  <Link href={link.href} key={link.href} className="text-lg font-medium">
-                    {link.label}
-                  </Link>
+                  <SheetClose asChild key={link.href}>
+                    <Link href={link.href} className={cn('text-lg font-medium', isActive(link.href) && 'font-bold text-primary')}>
+                      {link.label}
+                    </Link>
+                  </SheetClose>
                 ))}
               </div>
             </SheetContent>
