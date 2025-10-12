@@ -64,7 +64,7 @@ export default function AiSupportChat() {
       };
       const result = await chat(chatInput);
       setMessages((prev) => [...prev, { role: "bot", text: result.response }]);
-    } catch (error) => {
+    } catch (error) {
       console.error("Error calling AI:", error);
       setMessages((prev) => [
         ...prev,
