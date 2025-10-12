@@ -1,10 +1,11 @@
+
 "use client";
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle, BadgeCheck } from 'lucide-react';
+import { Menu, Circle as CircleIcon, Sun, Moon, Bot, User, Download, HelpCircle, BadgeCheck, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -17,6 +18,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 const useActivePath = () => {
@@ -49,6 +52,28 @@ function ThemeToggle() {
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System
         </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function LanguageSwitcher() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Languages className="h-[1.2rem] w-[1.2rem]" />
+          <span className="sr-only">Toggle language</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel className="font-bold">Translate Page</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <div className="p-2 text-sm text-muted-foreground max-w-xs">
+          To view this site in another language, please use your web browser's built-in translation feature.
+          <br /><br />
+          Simply <strong className="text-foreground">right-click</strong> anywhere on the page and select <strong className="text-foreground">"Translate"</strong>.
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -178,9 +203,11 @@ export default function Navbar() {
                     Download
                 </Link>
             </Button>
+            <LanguageSwitcher />
             <ThemeToggle />
             </nav>
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center">
+              <LanguageSwitcher />
               <ThemeToggle />
             </div>
         </div>
@@ -188,5 +215,3 @@ export default function Navbar() {
     </header>
   );
 }
-
-    
