@@ -10,9 +10,8 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import {
-  generate as genkitGenerate,
   MessageData,
-} from 'genkit';
+} from 'genkit/model';
 
 const ChatInputSchema = z.object({
   history: z.array(z.object({
@@ -43,8 +42,7 @@ const chatFlow = ai.defineFlow(
       content: [{ text: m.text }],
     }));
 
-    const response = await genkitGenerate({
-      model: ai.model,
+    const response = await ai.generate({
       prompt: "You are Circle AI, a helpful assistant for the Circle platform. Your goal is to answer user questions about the platform and help them navigate its features. Keep your responses concise and friendly.",
       history,
     });
