@@ -3,6 +3,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import AnimatedWrapper from '@/components/AnimatedWrapper';
 
 export const metadata: Metadata = {
   title: 'Circle Website',
@@ -25,7 +26,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <Navbar />
           <main className="flex-1 container mx-auto px-4 py-8">
-            {children}
+            <AnimatedWrapper>{children}</AnimatedWrapper>
           </main>
           <Footer />
         </div>
