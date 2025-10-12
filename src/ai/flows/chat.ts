@@ -62,6 +62,11 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
   ];
 
   input.history.forEach(m => {
+      // Skip the very first message from the bot if it's the welcome message
+      if (m.role === 'bot' && m.text.startsWith("Welcome to Circle AI support")) {
+          return;
+      }
+
       const contentParts: ({ type: string; text: string } | { type: string; image_url: { url: string } })[] = [{ type: 'text', text: m.text }];
       if (m.imageUrl) {
           contentParts.push({ type: 'image_url', image_url: { url: m.imageUrl } });
@@ -87,7 +92,7 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 
     if (!response.ok) {
         const errorBody = await response.text();
-        console.error("Deepseek API Error:", errorBody);
+        console.error("Deepseek API Error:", response.status, errorBody);
         throw new Error(`API request failed with status ${response.status}`);
     }
 

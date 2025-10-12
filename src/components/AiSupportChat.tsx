@@ -68,7 +68,7 @@ export default function AiSupportChat() {
       console.error("Error calling AI:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "Sorry, I'm having trouble connecting. Please check your API key and try again later." },
+        { role: "bot", text: "Sorry, I'm having trouble connecting to the AI service. Please check the console for more details." },
       ]);
     } finally {
       setIsLoading(false);
