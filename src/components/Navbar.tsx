@@ -62,7 +62,6 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
-    { href: '/download', label: 'Download'},
     { href: '/faq', label: 'FAQ' },
   ];
 
@@ -116,6 +115,15 @@ export default function Navbar() {
                         </Button>
                       </SheetClose>
                   ))}
+                   <div className="my-2 border-t border-border/40"></div>
+                   <SheetClose asChild>
+                      <Button asChild className="justify-center w-full">
+                          <Link href="/download">
+                          <Download className="mr-2" />
+                          Download App
+                          </Link>
+                      </Button>
+                    </SheetClose>
               </div>
             </SheetContent>
           </Sheet>
@@ -149,6 +157,12 @@ export default function Navbar() {
                 </DropdownMenuPortal>
               </DropdownMenu>
 
+            <Button asChild size="sm" className="ml-4">
+                <Link href="/download">
+                    <Download className="mr-2"/>
+                    Download
+                </Link>
+            </Button>
             <ThemeToggle />
             </nav>
             <div className="md:hidden">
