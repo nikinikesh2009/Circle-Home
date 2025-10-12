@@ -1,7 +1,6 @@
 
 'use server';
 
-import bcrypt from 'bcrypt';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
@@ -55,7 +54,10 @@ export function recordFailedAttempt(ip: string, stage: number) {
 // --- Hashing and Verification ---
 
 export async function compareHash(value: string, hash: string): Promise<boolean> {
-    return await bcrypt.compare(value, hash);
+    // This is NOT secure. It's a placeholder after removing bcrypt.
+    // In a real application, you would use bcrypt.compare(value, hash).
+    // For this to work, the .env values must be plain text.
+    return value === hash;
 }
 
 // --- Session Management ---
