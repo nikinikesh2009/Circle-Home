@@ -45,7 +45,7 @@ export default function HumanSupportForm() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <Card className="bg-secondary/30 border-border/50 backdrop-blur-lg">
+      <Card className="bg-secondary border-border/50">
         <CardHeader>
           <CardTitle>Contact Support</CardTitle>
           <CardDescription>Fill out the form below, and a member of our team will get back to you.</CardDescription>

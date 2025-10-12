@@ -81,14 +81,14 @@ export default function AiSupportChat() {
   };
 
   return (
-    <Card className="flex flex-col h-full bg-secondary/30 border-border/50 backdrop-blur-lg">
+    <Card className="flex flex-col h-full bg-secondary border-border/50">
       <CardContent className="flex-1 p-4 overflow-y-auto space-y-4">
         {messages.map((m, idx) => (
           <div
             key={idx}
             className={`p-3 rounded-lg text-sm max-w-[85%] flex-shrink-0 flex flex-col ${
               m.role === "bot"
-                ? "bg-background/70 text-foreground self-start"
+                ? "bg-background text-foreground"
                 : "bg-primary text-primary-foreground self-end ml-auto"
             }`}
           >
@@ -103,7 +103,7 @@ export default function AiSupportChat() {
           </div>
         ))}
         {isLoading && (
-          <div className="p-3 rounded-lg text-sm max-w-[85%] bg-background/70 text-foreground self-start">
+          <div className="p-3 rounded-lg text-sm max-w-[85%] bg-background text-foreground self-start">
             <Loader className="h-5 w-5 animate-spin" />
           </div>
         )}
