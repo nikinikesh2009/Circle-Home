@@ -1,17 +1,13 @@
 'use server';
 /**
- * @fileOverview A simple chat flow that uses Google's Gemini model via Genkit.
+ * @fileOverview A simple chat flow that uses the Deepseek API.
  * It is designed to act as an expert on the "Circle" platform and also function as a multilingual translator.
  *
  * - chat - A function that handles the chat interaction.
  * - ChatInput - The input type for the chat function.
  * - ChatOutput - The return type for the chat function.
  */
-
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-import {generate} from 'genkit/ai';
-import {MessageData, Part} from 'genkit/ai/message';
+import { z } from 'zod';
 
 const ChatInputSchema = z.object({
   history: z.array(
@@ -28,6 +24,12 @@ const ChatOutputSchema = z.object({
   response: z.string(),
 });
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
+
+
+type DeepseekMessage = {
+  role: 'user' | 'assistant';
+  content: string | ({ type: string; text: string } | { type: string; image_url: { url: string } })[];
+};
 
 export async function chat(input: ChatInput): Promise<ChatOutput> {
   const systemPrompt = `You are the official AI assistant for **Circle**, a next-generation social platform built to connect people who share the same passions, interests, and dreams. You are also an expert multilingual translator.
@@ -55,31 +57,48 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 - If users seem lost, help guide them to the right Circle or feature logically.
 - Never give false info. If unsure, say “I don’t have that detail yet.”`;
 
-  const history: MessageData[] = input.history.map(m => {
-    const parts: Part[] = [{text: m.text}];
-    if (m.imageUrl) {
-      parts.push({
-        media: {
-          url: m.imageUrl,
-        },
+  const messages: DeepseekMessage[] = [
+      { role: 'assistant', content: systemPrompt }
+  ];
+
+  input.history.forEach(m => {
+      const contentParts: ({ type: string; text: string } | { type: string; image_url: { url: string } })[] = [{ type: 'text', text: m.text }];
+      if (m.imageUrl) {
+          contentParts.push({ type: 'image_url', image_url: { url: m.imageUrl } });
+      }
+      messages.push({
+          role: m.role === 'bot' ? 'assistant' : 'user',
+          content: contentParts,
       });
+  });
+
+  try {
+    const response = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: messages,
+      }),
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("Deepseek API Error:", errorBody);
+        throw new Error(`API request failed with status ${response.status}`);
     }
+
+    const result = await response.json();
     return {
-      role: m.role === 'bot' ? 'model' : 'user',
-      content: parts,
+      response: result.choices[0].message.content,
     };
-  });
-
-  const response = await generate({
-    model: 'gemini-1.5-flash-latest',
-    prompt: {
-      system: systemPrompt,
-      history: history.slice(0, -1),
-      messages: [history[history.length - 1]],
-    },
-  });
-
-  return {
-    response: response.text,
-  };
+  } catch (error) {
+    console.error("Error calling Deepseek API:", error);
+    return {
+        response: "Sorry, I'm having trouble connecting to the AI service. Please check the console for more details."
+    }
+  }
 }
