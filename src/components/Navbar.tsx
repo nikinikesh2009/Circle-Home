@@ -69,10 +69,21 @@ function LanguageSwitcher() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className="font-bold">Translate Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <div className="p-2 text-sm text-muted-foreground max-w-xs">
-          To view this site in another language, please use your web browser's built-in translation feature.
-          <br /><br />
-          Simply <strong className="text-foreground">right-click</strong> anywhere on the page and select <strong className="text-foreground">"Translate"</strong>.
+         <div className="p-2 text-sm text-muted-foreground max-w-xs">
+          <p className="font-semibold text-foreground mb-2">This site can be translated into many languages using your browser:</p>
+          <ul className="list-disc list-inside text-xs">
+            <li>Sinhala (සිංහල)</li>
+            <li>Tamil (தமிழ்)</li>
+            <li>Chinese (中文)</li>
+            <li>Japanese (日本語)</li>
+            <li>Tagalog</li>
+            <li>Spanish (Español)</li>
+            <li>And many more...</li>
+          </ul>
+          <br />
+          <p>
+            To translate, <strong className="text-foreground">right-click</strong> anywhere on the page and select your browser's <strong className="text-foreground">"Translate"</strong> option.
+          </p>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
