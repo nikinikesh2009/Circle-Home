@@ -18,7 +18,7 @@ export default function Stage5Page() {
     <AuthCard
       stage={5}
       title="Security Layer 5"
-      description="Enter the two 4-digit backup codes."
+      description="Enter the two backup codes."
       errorMessage={state?.message}
     >
       <form action={formAction} className="space-y-4">
@@ -28,11 +28,8 @@ export default function Stage5Page() {
             id="code1" 
             name="code1" 
             type="text" 
-            inputMode="numeric"
-            placeholder="1234" 
+            placeholder="XXXX-XXXX-XXXX" 
             required 
-            maxLength={4} 
-            pattern="\d{4}"
           />
         </div>
          <div className="space-y-2">
@@ -41,11 +38,8 @@ export default function Stage5Page() {
             id="code2" 
             name="code2" 
             type="text"
-            inputMode="numeric"
-            placeholder="5678" 
+            placeholder="XXXX-XXXX-XXXX" 
             required 
-            maxLength={4}
-            pattern="\d{4}"
           />
         </div>
         <div className="pt-2">

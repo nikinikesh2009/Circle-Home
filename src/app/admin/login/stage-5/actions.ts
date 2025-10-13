@@ -7,8 +7,8 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const schema = z.object({
-  code1: z.string().length(4, 'Code must be 4 digits.').regex(/^\d{4}$/, 'Code must be numeric.'),
-  code2: z.string().length(4, 'Code must be 4 digits.').regex(/^\d{4}$/, 'Code must be numeric.'),
+  code1: z.string().min(1, "Backup Code 1 is required."),
+  code2: z.string().min(1, "Backup Code 2 is required."),
 });
 
 export async function verifyStage5(prevState: any, formData: FormData) {
