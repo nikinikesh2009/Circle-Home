@@ -1,6 +1,9 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
-import { verifySession, ADMIN_SESSION_COOKIE, LOGIN_STAGES_COOKIE } from '@/lib/auth';
+import { verifySession } from '@/lib/auth';
+
+export const ADMIN_SESSION_COOKIE = 'aco_admin_session';
+export const LOGIN_STAGES_COOKIE = 'aco_admin_login_stage';
 
 export const config = {
   matcher: '/admin/:path*',

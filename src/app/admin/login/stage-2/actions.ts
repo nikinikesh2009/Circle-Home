@@ -12,7 +12,7 @@ const schema = z.object({
 
 export async function verifyStage2(prevState: any, formData: FormData) {
     const ip = headers().get('x-forwarded-for') ?? '127.0.0.1';
-    const rateLimit = checkRateLimit(ip, 2);
+    const rateLimit = await checkRateLimit(ip, 2);
     if (rateLimit.limited) {
         return { message: rateLimit.message };
     }
@@ -29,7 +29,7 @@ export async function verifyStage2(prevState: any, formData: FormData) {
     const isCorrect = await compareHash(password, process.env.STAGE2_HASH!);
 
     if (!isCorrect) {
-        recordFailedAttempt(ip, 2);
+        await recordFailedAttempt(ip, 2);
         return { message: 'Access Denied.' };
     }
 

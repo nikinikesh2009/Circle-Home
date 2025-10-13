@@ -14,7 +14,7 @@ const schema = z.object({
 
 export async function verifyStage4(prevState: any, formData: FormData) {
     const ip = headers().get('x-forwarded-for') ?? '127.0.0.1';
-    const rateLimit = checkRateLimit(ip, 4);
+    const rateLimit = await checkRateLimit(ip, 4);
     if (rateLimit.limited) {
         return { message: rateLimit.message };
     }
@@ -40,7 +40,7 @@ export async function verifyStage4(prevState: any, formData: FormData) {
     ]);
 
     if (!isEmail1Correct || !isEmail2Correct || !isEmail3Correct) {
-        recordFailedAttempt(ip, 4);
+        await recordFailedAttempt(ip, 4);
         return { message: 'Access Denied.' };
     }
 
