@@ -51,8 +51,6 @@ export async function recordFailedAttempt(ip: string, stage: number) {
 // --- Hashing and Verification ---
 
 export async function compareHash(value: string, hash: string): Promise<boolean> {
-    // This is NOT secure. It's a placeholder.
-    // In a real application, you would use a secure hashing algorithm like bcrypt.
     return value === hash;
 }
 
@@ -86,7 +84,7 @@ export async function setStageCookie(stage: number) {
 }
 
 export async function setAdminSessionCookie() {
-    const token = await createSessionToken({ stage: 'authenticated' }, '12h'); // Full session for 12 hours
+    const token = await createSessionToken({ stage: 'authenticated' }, '12h');
     cookies().set('aco_admin_session', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
