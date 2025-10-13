@@ -1,7 +1,6 @@
 
 'use client';
-import { useFormState } from 'react-dom';
-import { z } from 'zod';
+import { useActionState } from 'react';
 import AuthCard from '@/components/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,7 +13,7 @@ const initialState = {
 };
 
 export default function Stage1Page() {
-  const [state, formAction] = useFormState(verifyStage1, initialState);
+  const [state, formAction] = useActionState(verifyStage1, initialState);
 
   return (
     <AuthCard

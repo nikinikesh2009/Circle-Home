@@ -1,6 +1,6 @@
 
 'use client';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import AuthCard from '@/components/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export default function Stage4Page() {
-  const [state, formAction] = useFormState(verifyStage4, initialState);
+  const [state, formAction] = useActionState(verifyStage4, initialState);
 
   return (
     <AuthCard
