@@ -51,9 +51,8 @@ export async function recordFailedAttempt(ip: string, stage: number) {
 // --- Hashing and Verification ---
 
 export async function compareHash(value: string, hash: string): Promise<boolean> {
-    // This is NOT secure. It's a placeholder after removing bcrypt.
-    // In a real application, you would use a secure comparison.
-    // For this to work, the .env values must be plain text.
+    // This is NOT secure. It's a placeholder.
+    // In a real application, you would use a secure hashing algorithm like bcrypt.
     return value === hash;
 }
 
@@ -93,7 +92,7 @@ export async function setAdminSessionCookie() {
         secure: process.env.NODE_ENV === 'production',
         path: '/admin',
         sameSite: 'lax',
-        expires: new Date(Date.now() + 12 * 60 * 60 * 1000),
+        maxAge: 12 * 60 * 60, // 12 hours in seconds
     });
     // Clear the stage progression cookie
     cookies().delete('aco_admin_login_stage');
