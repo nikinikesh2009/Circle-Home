@@ -1,58 +1,46 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Toaster } from '@/components/ui/toaster';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { Inter, Space_Grotesk, Playfair_Display } from 'next/font/google';
-import { cn } from '@/lib/utils';
-import { TranslationProvider } from '@/context/TranslationContext';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair-display',
-});
-
-
-export const metadata: Metadata = {
-  title: 'Circle Website',
-  description: 'A new kind of platform to meet people who share your passion.',
-};
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Aoscompo from '@/lib/utils/aos'
+import ScrollToTop from './components/scroll-to-top'
+import Header from './components/layout/header'
+import Footer from './components/layout/footer'
+const font = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.variable, spaceGrotesk.variable, playfairDisplay.variable, "font-body antialiased bg-background")}>
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${font.className}`}>
+        <Aoscompo>
+          <Header />
+          {children}
+          <Footer />
+        </Aoscompo>
+        <ScrollToTop />
+      </body>
+    </html>
+  )
+}
+      <body className={cn(inter.variable, spaceGrotesk.variable, playfairDisplay.variable, "font-body antialiased")}>
         <TranslationProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
             <div className="aurora-background"></div>
             <div className="flex flex-col min-h-screen relative z-10">
-              <Navbar />
-              <main className="flex-1 container mx-auto px-4 py-8">
+              <Header />
+              <main className="flex-1 pt-20">
                 <AnimatedWrapper>{children}</AnimatedWrapper>
               </main>
               <Footer />
             </div>
+            <ScrollToTop />
             <Toaster />
           </ThemeProvider>
         </TranslationProvider>

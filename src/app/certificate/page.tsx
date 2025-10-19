@@ -175,7 +175,7 @@ export default function CertificatePage() {
 
                          <div className="text-center">
                             <h3 className="text-lg font-semibold">Confirmed By:</h3>
-                            <p className="font-serif text-2xl my-4">Owner and Founder of ACO Network — Nikil Nikesh with his lovely partner</p>
+                            <p className="font-serif text-2xl my-4">Founder of ACO Network Nikil Nikesh With Lising Montilla Ma Evelyn</p>
                             <div className="inline-flex items-center gap-2 text-sm font-bold text-green-600">
                                 <BadgeCheck className="h-5 w-5" /> Verified by ACO Network
                             </div>

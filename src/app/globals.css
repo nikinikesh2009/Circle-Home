@@ -2,72 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --shadow-mentor-shadow: 0px 4px 20px rgba(110, 127, 185, 0.1);
+
+  --inset-54\%: 54%;
+  --inset-40\%: 40%;
+
+  --color-primary: #bd24df;
+  --color-secondary: #2d6ade;
+  --color-body-bg: #040D26;
+  --color-darkmode: #0c1b44;
+  --color-tablebg: #132259;
+  --color-border: #091945;
+  --color-lightblue: #8a9bca;
+  --color-lightsky: #ECF2FF;
+  --color-lightpurple: #B4C7ED;
+
+  --blur-390: 390px;
+
+  --background-image-banner-image: linear-gradient(
+    90deg,
+    #bd24df80,
+    #2d6ade80 97.15%
+  );
+  --background-image-simple-bg: linear-gradient(
+    90deg,
+    rgba(189, 36, 223, 0.1),
+    rgba(45, 106, 222, 0.1) 97.15%
+  );
+  --background-image-arrow-bg: url('/images/simple/arrow-bg.png');
+  --background-image-newsletter: url('/images/newsletter/hands.svg');
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262 80% 58%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 262 80% 58%;
-    --chart-1: 262 80% 58%;
-    --chart-2: 180 80% 50%;
-    --chart-3: 280 80% 60%;
-    --chart-4: 40 90% 55%;
-    --chart-5: 320 85% 65%;
-    --radius: 0.5rem;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
+
+  section {
+    @apply py-14 bg-body-bg;
+  }
+
+  h1 {
+    @apply text-white font-bold lg:text-7xl sm:text-6xl text-5xl;
+  }
+
+  h2 {
+    @apply text-lightsky sm:text-5xl text-4xl font-bold;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-7xl mx-auto w-full px-4;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 
   .dark {
-    --background: 222 84% 5%;
+    /* Dark mode - professional dark theme */
+    --background: 222 84% 8%;
     --foreground: 210 40% 98%;
-    --card: 222 84% 5%;
+    --card: 222 70% 14%;
     --card-foreground: 210 40% 98%;
-    --popover: 222 84% 5%;
+    --popover: 222 70% 14%;
     --popover-foreground: 210 40% 98%;
-    --primary: 262 80% 58%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --primary: 280 80% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 90% 61%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 262 80% 58%;
-    --chart-1: 262 80% 58%;
+    --ring: 280 80% 55%;
+    --chart-1: 280 80% 55%;
     --chart-2: 180 80% 50%;
     --chart-3: 280 80% 60%;
     --chart-4: 40 90% 55%;
     --chart-5: 320 85% 65%;
   }
-
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body antialiased;
   }
 
+  section {
+    @apply py-14 lg:py-20;
+  }
+
+  h1 {
+    @apply font-headline font-bold text-5xl sm:text-6xl lg:text-7xl;
+  }
+
+  h2 {
+    @apply font-headline font-bold text-4xl sm:text-5xl;
+  }
+
+  h3 {
+    @apply font-headline font-semibold text-2xl sm:text-3xl;
+  }
+
+  /* Aurora gradient background */
   .aurora-background {
     position: fixed;
     top: 0;
@@ -75,22 +141,83 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.2;
+    opacity: 0.15;
     background:
-      radial-gradient(ellipse at 20% 80%, hsl(var(--primary) / 0.3), transparent),
-      radial-gradient(ellipse at 80% 30%, hsl(var(--chart-2) / 0.3), transparent),
-      radial-gradient(ellipse at 90% 80%, hsl(var(--chart-4) / 0.3), transparent);
+      radial-gradient(ellipse at 20% 80%, hsl(var(--primary) / 0.4), transparent),
+      radial-gradient(ellipse at 80% 30%, hsl(var(--secondary) / 0.4), transparent),
+      radial-gradient(ellipse at 50% 50%, hsl(var(--accent) / 0.3), transparent);
     background-size: 800% 800%;
     animation: aurora-animation 20s ease-in-out infinite;
   }
 
   .dark .aurora-background {
-    opacity: 0.3;
+    opacity: 0.25;
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-md bg-card/80 border border-border/50;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Gradient backgrounds */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-secondary;
+  }
+
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-r from-secondary to-primary;
+  }
+
+  /* Text shadows for glow effect */
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
   }
 }
 
 @keyframes aurora-animation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--secondary));
 }

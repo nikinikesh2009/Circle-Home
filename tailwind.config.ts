@@ -17,9 +17,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['var(--font-inter)', 'sans-serif'],
-        headline: ['var(--font-space-grotesk)', 'sans-serif'],
-        serif: ['var(--font-playfair-display)', 'serif'],
+        body: ['var(--font-inter)', 'Inter', 'Segoe UI', 'Arial', 'sans-serif'],
+        headline: ['var(--font-space-grotesk)', 'Space Grotesk', 'Segoe UI', 'Arial', 'sans-serif'],
+        serif: ['var(--font-playfair-display)', 'Playfair Display', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

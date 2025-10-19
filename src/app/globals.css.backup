@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 245 75% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 245 75% 60%;
+    --chart-1: 245 75% 60%;
+    --chart-2: 180 80% 50%;
+    --chart-3: 280 80% 60%;
+    --chart-4: 40 90% 55%;
+    --chart-5: 320 85% 65%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 245 75% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 245 75% 60%;
+    --chart-1: 245 75% 60%;
+    --chart-2: 180 80% 50%;
+    --chart-3: 280 80% 60%;
+    --chart-4: 40 90% 55%;
+    --chart-5: 320 85% 65%;
+  }
+
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .aurora-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.2;
+    background:
+      radial-gradient(ellipse at 20% 80%, hsl(var(--primary) / 0.3), transparent),
+      radial-gradient(ellipse at 80% 30%, hsl(var(--chart-2) / 0.3), transparent),
+      radial-gradient(ellipse at 90% 80%, hsl(var(--chart-4) / 0.3), transparent);
+    background-size: 800% 800%;
+    animation: aurora-animation 20s ease-in-out infinite;
+  }
+
+  .dark .aurora-background {
+    opacity: 0.3;
+  }
+}
+
+@keyframes aurora-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
