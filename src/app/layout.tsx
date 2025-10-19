@@ -1,10 +1,28 @@
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk, Playfair_Display } from 'next/font/google'
 import './globals.css'
-import Aoscompo from '@/lib/utils/aos'
-import ScrollToTop from './components/scroll-to-top'
-import Header from './components/layout/header'
-import Footer from './components/layout/footer'
-const font = Inter({ subsets: ['latin'] })
+import { cn } from '@/lib/utils'
+import ScrollToTop from '@/components/ScrollToTop'
+import Header from '@/components/Header'
+import Footer from '@/components/FooterNew'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { TranslationProvider } from '@/context/TranslationContext'
+import { Toaster } from '@/components/ui/toaster'
+import AnimatedWrapper from '@/components/AnimatedWrapper'
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+})
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair-display',
+})
 
 export default function RootLayout({
   children,
@@ -13,17 +31,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${font.className}`}>
-        <Aoscompo>
-          <Header />
-          {children}
-          <Footer />
-        </Aoscompo>
-        <ScrollToTop />
-      </body>
-    </html>
-  )
-}
       <body className={cn(inter.variable, spaceGrotesk.variable, playfairDisplay.variable, "font-body antialiased")}>
         <TranslationProvider>
           <ThemeProvider

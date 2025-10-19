@@ -2,85 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'tailwindcss';
-
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  --shadow-mentor-shadow: 0px 4px 20px rgba(110, 127, 185, 0.1);
-
-  --inset-54\%: 54%;
-  --inset-40\%: 40%;
-
-  --color-primary: #bd24df;
-  --color-secondary: #2d6ade;
-  --color-body-bg: #040D26;
-  --color-darkmode: #0c1b44;
-  --color-tablebg: #132259;
-  --color-border: #091945;
-  --color-lightblue: #8a9bca;
-  --color-lightsky: #ECF2FF;
-  --color-lightpurple: #B4C7ED;
-
-  --blur-390: 390px;
-
-  --background-image-banner-image: linear-gradient(
-    90deg,
-    #bd24df80,
-    #2d6ade80 97.15%
-  );
-  --background-image-simple-bg: linear-gradient(
-    90deg,
-    rgba(189, 36, 223, 0.1),
-    rgba(45, 106, 222, 0.1) 97.15%
-  );
-  --background-image-arrow-bg: url('/images/simple/arrow-bg.png');
-  --background-image-newsletter: url('/images/newsletter/hands.svg');
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 280 80% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 90% 61%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 280 80% 55%;
+    --chart-1: 280 80% 55%;
+    --chart-2: 180 80% 50%;
+    --chart-3: 280 80% 60%;
+    --chart-4: 40 90% 55%;
+    --chart-5: 320 85% 65%;
+    --radius: 0.75rem;
   }
-
-  section {
-    @apply py-14 bg-body-bg;
-  }
-
-  h1 {
-    @apply text-white font-bold lg:text-7xl sm:text-6xl text-5xl;
-  }
-
-  h2 {
-    @apply text-lightsky sm:text-5xl text-4xl font-bold;
-  }
-}
-
-@layer utilities {
-  .container {
-    @apply max-w-7xl mx-auto w-full px-4;
-  }
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
 
   .dark {
-    /* Dark mode - professional dark theme */
     --background: 222 84% 8%;
     --foreground: 210 40% 98%;
     --card: 222 70% 14%;
@@ -106,34 +57,17 @@ html {
     --chart-4: 40 90% 55%;
     --chart-5: 320 85% 65%;
   }
+
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-  
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground;
   }
 
-  section {
-    @apply py-14 lg:py-20;
-  }
-
-  h1 {
-    @apply font-headline font-bold text-5xl sm:text-6xl lg:text-7xl;
-  }
-
-  h2 {
-    @apply font-headline font-bold text-4xl sm:text-5xl;
-  }
-
-  h3 {
-    @apply font-headline font-semibold text-2xl sm:text-3xl;
-  }
-
-  /* Aurora gradient background */
   .aurora-background {
     position: fixed;
     top: 0;
@@ -141,83 +75,45 @@ html {
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.15;
+    opacity: 0.2;
     background:
-      radial-gradient(ellipse at 20% 80%, hsl(var(--primary) / 0.4), transparent),
-      radial-gradient(ellipse at 80% 30%, hsl(var(--secondary) / 0.4), transparent),
-      radial-gradient(ellipse at 50% 50%, hsl(var(--accent) / 0.3), transparent);
+      radial-gradient(ellipse at 20% 80%, hsl(var(--primary) / 0.3), transparent),
+      radial-gradient(ellipse at 80% 30%, hsl(var(--chart-2) / 0.3), transparent),
+      radial-gradient(ellipse at 90% 80%, hsl(var(--chart-4) / 0.3), transparent);
     background-size: 800% 800%;
     animation: aurora-animation 20s ease-in-out infinite;
   }
 
   .dark .aurora-background {
-    opacity: 0.25;
+    opacity: 0.3;
   }
+}
 
-  /* Gradient text effect */
+@keyframes aurora-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Professional Design Utilities */
+@layer utilities {
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
   }
 
-  /* Glass morphism effect */
   .glass {
-    @apply backdrop-blur-md bg-card/80 border border-border/50;
-  }
-}
-
-@layer utilities {
-  .container {
-    @apply max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8;
+    @apply bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20;
   }
 
-  /* Gradient backgrounds */
   .bg-gradient-primary {
     @apply bg-gradient-to-r from-primary to-secondary;
   }
 
   .bg-gradient-secondary {
-    @apply bg-gradient-to-r from-secondary to-primary;
+    @apply bg-gradient-to-br from-secondary to-accent;
   }
 
-  /* Text shadows for glow effect */
-  .text-glow {
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
-  }
-
-  /* Smooth transitions */
   .transition-smooth {
     @apply transition-all duration-300 ease-in-out;
   }
-}
-
-@keyframes aurora-animation {
-  0%, 100% { 
-    background-position: 0% 50%; 
-  }
-  50% { 
-    background-position: 100% 50%; 
-  }
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary));
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--secondary));
 }
